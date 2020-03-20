@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuizitQuestionAnswers extends Model
 {
+    protected $with = ['question'];
+
     /**
      * @return BelongsTo
      */

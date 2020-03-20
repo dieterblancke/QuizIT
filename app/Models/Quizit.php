@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Quizit extends Model
 {
+    protected $with = ['questions'];
+
     /**
      * @return HasMany
      */

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class QuizitQuestion extends Model
 {
+    protected $with = ['quizit', 'answers'];
+
     /**
      * @return BelongsTo
      */
