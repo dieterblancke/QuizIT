@@ -21,7 +21,7 @@ Route::get('/join', function () {
    return view('join');
 });
 
-Route::post('/join', 'QuizController@join');
+Route::post('/join', 'QuizController@join')->name('join');
 
 Auth::routes();
 

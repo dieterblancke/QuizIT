@@ -5,8 +5,9 @@
 @section('content')
     <h1>Join quiz</h1>
     <h2>Supply<br />QuizID</h2>
-    <form action="/join" method="POST">
+
+    <form action="{{route("join")}}" method="POST">
         <input type="number" min="0" name="QuizID" id="QuizID">
-        <input type="button" value="QuizIN">
+        <input type="submit" value="QuizIN">
     </form>
 @endsection
