@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,20 +13,38 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+/**
+ * Auth Routes
+ */
 Auth::routes();
 
-Route::get('/', function () {
-    return view('index');
-});
+/**
+ * Guest Routes
+ */
+Route::prefix('/')
+    ->group(function () {
+        Route::get('/', function () {
+            return view('index');
+        });
 
-Route::get('/join', function () {
-   return view('join');
-});
+        Route::prefix('join')
+            ->group(function () {
+                Route::get('/', 'QuizController@joinView');
+                Route::post('/', 'QuizController@join')->name('join');
+            });
+    });
 
-Route::get('/create', function () {
-    return view('create');
-});
+/**
+ * User Routes
+ */
+Route::prefix('quizits')
+    ->as('quizits.')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/', 'QuizitsController@index')->name('index');
 
-Route::post('/join', 'QuizController@join')->name('join');
-
-Route::get('/home', 'HomeController@index')->name('home');
+        Route::get('/create', function () {
+            return view('create');
+        });
+    });
