@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
     return view('index');
@@ -21,8 +22,10 @@ Route::get('/join', function () {
    return view('join');
 });
 
-Route::post('/join', 'QuizController@join')->name('join');
+Route::get('/create', function () {
+    return view('create');
+});
 
-Auth::routes();
+Route::post('/join', 'QuizController@join')->name('join');
 
 Route::get('/home', 'HomeController@index')->name('home');
