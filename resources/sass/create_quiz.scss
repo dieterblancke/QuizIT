@@ -1,0 +1,46 @@
+#questions {
+    ul {
+        padding-left: 0;
+
+        li {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            list-style: none;
+            position: relative;
+
+            span {
+                margin-left: 10px;
+                position: absolute;
+            }
+
+            &:before {
+                display: inline-block;
+                font-style: normal;
+                font-variant: normal;
+                text-rendering: auto;
+                -webkit-font-smoothing: antialiased;
+                font-family: "FontAwesome";
+                font-weight: 900;
+            }
+
+            &[data-correct="true"]:before {
+                content: "\f00c";
+                color: green;
+            }
+
+            &[data-correct="false"]:before {
+                content: "\f00d";
+                color: red;
+            }
+        }
+    }
+
+    .actions {
+        display: flex;
+        justify-content: end;
+
+        .action:not(:last-of-type) {
+            margin-right: 10px;
+        }
+    }
+}

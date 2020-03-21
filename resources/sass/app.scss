@@ -1,7 +1,11 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-@import '../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
-@import '../../node_modules/sweetalert2/dist/sweetalert2.css';
+
+// Fontawesome
+@import '~font-awesome/scss/font-awesome.scss';
+
+// Sweetalert
+@import '~sweetalert2/dist/sweetalert2.css';
 
 // Variables
 @import 'variables';
@@ -10,5 +14,5 @@
 @import '~bootstrap/scss/bootstrap';
 
 //Create quiz CSS
-@import "createQuiz";
-
+@import "create_quiz";
+@import "actions";

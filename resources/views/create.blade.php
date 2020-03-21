@@ -4,18 +4,30 @@
 
 @section('content')
     <h1>Create your quiz</h1>
-    <h2>Your questions and answers</h2>
+    <div class="form-group">
+        <label for="name">Quizit Name</label>
+        <input type="text" class="form-control" id="name" name="name" />
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Questions & Answers</h2>
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Create new question
+        </button>
+    </div>
     <table class="table table-bordered" id="questions">
+        <thead>
         <tr>
             <th>Question</th>
             <th>Answers</th>
             <th>Actions</th>
         </tr>
+        </thead>
+        <tbody>
+        </tbody>
     </table>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Create a question
-    </button>
     <button type="button" class="btn btn-primary" id="submitQuiz">
         Submit quiz
     </button>
@@ -37,15 +49,13 @@
                             <input class="form-control" type="text" id="question"/>
                         </div>
                         <div class="form-group">
-                            <label for="answers">Answers:<small>(The first answer is the correct one)</small></label>
-                            <textarea id="answers" class="form-control"
-                                      placeholder="Seperate your answers using an ENTER"></textarea>
+                            <label for="answerAmount">Amount of answers:</label>
+                            <input class="form-control" type="number" id="answerAmount"/>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input id="submitQuestion" type="submit" class="btn btn-primary" value="Save question">
-                        <button id="closeModel" type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                        </button>
+                        <button id="closeModel" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input id="submitQuestion" type="submit" class="btn btn-primary" value="Next ->">
                     </div>
                 </form>
             </div>
