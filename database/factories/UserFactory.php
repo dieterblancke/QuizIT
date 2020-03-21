@@ -17,12 +17,12 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function () {
+$factory->define(User::class, function (Faker $faker) {
     static $i = 0;
     $i++;
 
     return [
-        'name' => "user$i",
+        'name' => $faker->name,
         'email' => "user$i@quizit.ga",
         'email_verified_at' => now(),
         'password' => bcrypt("user$i"),
