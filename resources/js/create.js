@@ -12,16 +12,15 @@ function init() {
 function createQuestion(e) {
     e.preventDefault();
 
-    let question = document.querySelector("#question");
+    let question = document.querySelector("#question").value;
     let answers = document.querySelector("#answers");
 
-    if (question.value.length !== 0 && answers.value.length !== 0) {
-        let questionValue = question.value;
+    if (question.length !== 0 && answers.value.length !== 0) {
         let table = document.querySelector("#questions");
         let answerArray = answers.value.split("\n");
 
         let toAdd = "<tr>" +
-            "<td>" + questionValue + "</td>" +
+            "<td>" + question + "</td>" +
             "<td>" +
             "<ul>";
         for (let i = 0; i < answerArray.length; i++) {
@@ -30,15 +29,15 @@ function createQuestion(e) {
         toAdd += "</ul>" +
             "</td>";
 
-        let question = {
-            "question": questionValue,
+        const questionJSON = {
+            "question": question,
             "answers": answerArray
         };
 
-        quizQuestions.push(question);
+        quizQuestions.push(questionJSON);
 
         table.innerHTML += toAdd;
-        question.value = null;
+        document.querySelector("#question").value = null;
         answers.value = null;
 
         document.querySelector("#closeModel").click();
@@ -47,7 +46,15 @@ function createQuestion(e) {
 
 function submitQuiz(e) {
     e.preventDefault();
+    let url = "/api/quizits/create";
 
-    console.log(quizQuestions);
+    fetch(url, {
+        method: "POST",
+        body: JSON.stringify(quizQuestions)
+    })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(console.log)
+        .catch(console.error)
 }
-
