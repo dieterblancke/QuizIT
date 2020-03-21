@@ -5,7 +5,7 @@
 @section('content')
     <h1>Create your quiz</h1>
     <h2>Your questions and answers</h2>
-    <table id="questions">
+    <table class="table table-bordered" id="questions">
         <tr>
             <th>Question</th>
             <th>Answers</th>
@@ -13,9 +13,8 @@
         </tr>
     </table>
 
-    <h2>Add question</h2>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Launch Question Maker
+        Create a question
     </button>
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
