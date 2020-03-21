@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class QuizitQuestion extends Model
 {
-    protected $with = ['quizit', 'answers'];
+    protected $with = ['answers'];
 
     /**
      * @return BelongsTo
      */
     public function quizit()
     {
-        return $this->belongsTo(Quizit::class);
+        return $this->belongsTo(Quizit::class, 'quizit_id');
     }
 
     /**
@@ -23,6 +23,6 @@ class QuizitQuestion extends Model
      */
     public function answers()
     {
-        return $this->hasMany(QuizitQuestionAnswers::class);
+        return $this->hasMany(QuizitQuestionAnswer::class, 'question_id');
     }
 }
