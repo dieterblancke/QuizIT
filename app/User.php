@@ -2,7 +2,8 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Quizit;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -36,4 +37,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @var array
+     */
+    protected $with = [
+        'quizits'
+    ];
+
+    /**
+     * @return HasMany
+     */
+    public function quizits()
+    {
+        return $this->hasMany(Quizit::class, "author_id");
+    }
 }

@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class QuizitQuestionAnswers extends Model
+class QuizitQuestionAnswer extends Model
 {
-    protected $with = ['question'];
-
     /**
      * @return BelongsTo
      */
     public function question() {
-        return $this->belongsTo(QuizitQuestion::class);
+        return $this->belongsTo(QuizitQuestion::class, 'question_id');
     }
 }
