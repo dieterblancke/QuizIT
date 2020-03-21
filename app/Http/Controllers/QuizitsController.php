@@ -22,7 +22,7 @@ class QuizitsController extends Controller
         return view('create');
     }
 
-    public function create() {
+    public function create(Request $request) {
         return [];
     }
 }

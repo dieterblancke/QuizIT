@@ -19,7 +19,7 @@ function createQuestion(e) {
         let table = document.querySelector("#questions");
         let answerArray = answers.value.split("\n");
 
-        let toAdd = "<tr>" +
+        let toAdd = "<tr id='question_" + quizQuestions.length + "'>" +
             "<td>" + question + "</td>" +
             "<td>" +
             "<ul>";
@@ -27,16 +27,18 @@ function createQuestion(e) {
             toAdd += "<li>" + answerArray[i] + "</li>";
         }
         toAdd += "</ul>" +
-            "</td>";
+            "<td><a id='question_" + quizQuestions.length + "' class='btn btn-primary'>Delete question</a></td></td>";
 
         const questionJSON = {
             "question": question,
             "answers": answerArray
         };
 
+        table.innerHTML += toAdd;
+        document.querySelector("#question_" + quizQuestions.length).addEventListener("click", deleteQuestion)
+
         quizQuestions.push(questionJSON);
 
-        table.innerHTML += toAdd;
         document.querySelector("#question").value = null;
         answers.value = null;
 
@@ -46,15 +48,33 @@ function createQuestion(e) {
 
 function submitQuiz(e) {
     e.preventDefault();
-    let url = "/api/quizits/create";
+    let url = "/quizits/create";
 
-    fetch(url, {
-        method: "POST",
-        body: JSON.stringify(quizQuestions)
+    axios.post(url, quizQuestions, {
+        headers: {
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+        }
     })
-        .then(function (response) {
-            return response.json();
+        .then(function (json) {
+            console.log(json);
+            Swal.fire(
+                'QuizIN',
+                'Your quiz was saved',
+                'success'
+            );
         })
-        .then(console.log)
-        .catch(console.error)
+        .catch(function (json) {
+            console.error(json);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            });
+        })
+}
+
+function deleteQuestion(e) {
+    e.preventDefault();
+
+    console.log(e);
 }

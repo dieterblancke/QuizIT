@@ -43,5 +43,6 @@ Route::prefix('quizits')
     ->middleware('auth')
     ->group(function () {
         Route::get('/', 'QuizitsController@index')->name('index');
-        Route::get('/', 'QuizitsController@createView');
+        Route::get('/create', 'QuizitsController@createView');
+        Route::post('create', 'QuizitsController@create')->name('create');
     });
