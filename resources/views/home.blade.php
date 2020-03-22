@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        <table class="table table-bordered">
+        <table id="quizits" class="table table-bordered">
             <thead>
             <tr>
                 <th>Name</th>
@@ -27,7 +27,16 @@
             @foreach($quizits as $quizit)
                 <tr>
                     <td>{{ $quizit->name }}</td>
-                    <td></td>
+                    <td>
+                        <div class="actions">
+                            <a class="btn btn-primary action action-warning edit" href="{{ route('quizits.edit', [$quizit->id]) }}">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <a class="btn btn-primary action action-danger delete">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             @endforeach
             </tbody>

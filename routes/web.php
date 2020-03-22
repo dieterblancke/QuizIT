@@ -43,6 +43,13 @@ Route::prefix('quizits')
     ->middleware('auth')
     ->group(function () {
         Route::get('/', 'QuizitsController@index')->name('index');
-        Route::get('/create', 'QuizitsController@createView');
-        Route::post('create', 'QuizitsController@create')->name('create');
+
+        Route::prefix('/create')
+            ->group(function() {
+                Route::get('/', 'QuizitsController@createView');
+                Route::post('/', 'QuizitsController@create')->name('create');
+            });
+
+        Route::get('/edit/{id}', 'QuizitsController@editView')->name('edit');
+        Route::put('/update/{id}', 'QuizitsController@update');
     });

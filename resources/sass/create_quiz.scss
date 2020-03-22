@@ -34,13 +34,4 @@
             }
         }
     }
-
-    .actions {
-        display: flex;
-        justify-content: end;
-
-        .action:not(:last-of-type) {
-            margin-right: 10px;
-        }
-    }
 }

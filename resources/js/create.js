@@ -1,12 +1,49 @@
 "use strict";
 
+let quizitId;
 let quizQuestions = [];
+let mode = "create";
 
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
+    const questionsTable = document.querySelector('#questions');
+
+    if (!questionsTable) {
+        return;
+    }
+    if (questionsTable.hasAttribute('data-quizit-id')) {
+        // this means that this is the edit form
+        quizitId = questionsTable.getAttribute('data-quizit-id');
+        mode = "edit";
+
+        loadExistingQuestions();
+    }
+
     document.querySelector("#questionForm").addEventListener("submit", createQuestion);
     document.querySelector("#submitQuiz").addEventListener("click", submitQuiz);
+}
+
+function loadExistingQuestions() {
+    const questionRows = document.querySelectorAll('#questions tbody tr');
+
+    for (let i = 0; i < questionRows.length; i++) {
+        const quizQuestion = {};
+        const questionRow = questionRows[i];
+        quizQuestion['question'] = questionRow.querySelector('.question').innerText;
+        quizQuestion['answers'] = [];
+
+        const answersUl = questionRow.querySelectorAll('.answers li');
+        for (let j = 0; j < answersUl.length; j++) {
+            const answerLi = answersUl[j];
+            const answer = answerLi.querySelector('span').innerText;
+            const correct = answerLi.getAttribute('data-correct') === 'true';
+
+            quizQuestion['answers'].push({ answer, correct })
+        }
+
+        quizQuestions.push(quizQuestion);
+    }
 }
 
 function createQuestion(e) {
@@ -125,19 +162,27 @@ function addToTable(obj) {
 function submitQuiz(e) {
     e.preventDefault();
     let url = "/quizits/create";
+    const request = {
+        name: document.querySelector('#name').value,
+        questions: quizQuestions,
+    };
 
-    axios.post(url, quizQuestions, {
+    axios.post(url, request, {
         headers: {
             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
         }
     })
-        .then(function (json) {
-            console.log(json);
+        .then(function (response) {
+            console.log(response);
             Swal.fire(
                 'QuizIN',
-                'Your quiz was saved',
-                'success'
-            );
+                response.data.message,
+                response.data.status,
+            ).then(function () {
+                if (response.data.status === 'success') {
+                    window.location = '/quizits/';
+                }
+            });
         })
         .catch(function (json) {
             console.error(json);
