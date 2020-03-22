@@ -12,7 +12,7 @@
     <div class="d-flex justify-content-between align-items-center">
         <h2>Questions & Answers</h2>
 
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" id="create-question-button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
             Create new question
         </button>
     </div>

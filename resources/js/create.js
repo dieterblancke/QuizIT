@@ -3,6 +3,7 @@
 let quizitId;
 let quizQuestions = [];
 let mode = "create";
+let currentEditIndex = undefined;
 
 document.addEventListener('DOMContentLoaded', init);
 
@@ -39,7 +40,7 @@ function loadExistingQuestions() {
             const answer = answerLi.querySelector('span').innerText;
             const correct = answerLi.getAttribute('data-correct') === 'true';
 
-            quizQuestion['answers'].push({ answer, correct })
+            quizQuestion['answers'].push({answer, correct})
         }
 
         quizQuestions.push(quizQuestion);
@@ -51,12 +52,14 @@ function loadExistingQuestions() {
 
 function createQuestion(e) {
     e.preventDefault();
-
     let question = document.querySelector("#question").value;
 
     if (question.length !== 0) {
         let amount = parseInt(document.querySelector("#answerAmount").value) ?? 4;
 
+        if (amount < 1) {
+            amount = 1;
+        }
         if (amount > 7) {
             amount = 7;
         }
@@ -68,7 +71,11 @@ function createQuestion(e) {
 
         document.querySelector("#question").value = null;
         document.querySelector("#closeModel").click();
-        openAnswersModal(quizQuestions.length - 1, amount);
+        openAnswersModal(
+            currentEditIndex !== undefined ? currentEditIndex : quizQuestions.length - 1,
+            amount
+        );
+        currentEditIndex = undefined;
     }
 }
 
@@ -78,12 +85,23 @@ function openAnswersModal(questionId, amount) {
     let currentId = 0;
 
     for (let i = 0; i < amount; i++) {
-        steps.push((i + 1) + '');
-        swalQuestions.push({
+        const currentAnswer =
+            quizQuestions[questionId].answers.length > 0 && quizQuestions[questionId].answers.length > i
+                ? quizQuestions[questionId].answers[i]
+                : undefined;
+
+        const questionData = {
             title: 'Answer ' + (i + 1),
-            html: `<input type="checkbox" id="correct${i}">
+            html: `<input type="checkbox" id="correct${i}" ${currentAnswer && currentAnswer.correct ? "checked" : ""}>
                    <label for="correct${i}">Is this a correct answer?</label>`,
-        });
+        };
+
+        if (currentAnswer) {
+            questionData['inputValue'] = currentAnswer.answer;
+        }
+
+        steps.push((i + 1) + '');
+        swalQuestions.push(questionData);
     }
 
     Swal.mixin({
@@ -99,9 +117,17 @@ function openAnswersModal(questionId, amount) {
         }
     }).queue(swalQuestions).then((result) => {
         if (result.value) {
-            addToTable(quizQuestions[questionId]);
+            loadTable();
         }
     })
+}
+
+function loadTable() {
+    $("#questions tbody").empty();
+
+    for (let i = 0; i < quizQuestions.length; i++) {
+        addToTable(quizQuestions[i]);
+    }
 }
 
 function addToTable(obj) {
@@ -221,5 +247,12 @@ function deleteQuestion(e) {
 function editQuestion(e) {
     e.preventDefault();
 
-    console.log(e);
+    const tr = e.target.closest('tr');
+    const index = parseInt(tr.getAttribute('data-row-index'));
+
+    document.querySelector("#question").value = tr.querySelector('.question').innerText;
+    document.querySelector("#answerAmount").value = quizQuestions[index].answers.length;
+
+    document.querySelector("#create-question-button").click();
+    currentEditIndex = index;
 }
