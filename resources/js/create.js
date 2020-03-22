@@ -161,13 +161,14 @@ function addToTable(obj) {
 
 function submitQuiz(e) {
     e.preventDefault();
-    let url = "/quizits/create";
+    let url = mode === "create" ? "/quizits/create" : "/quizits/update/" + quizitId;
+
     const request = {
         name: document.querySelector('#name').value,
         questions: quizQuestions,
     };
 
-    axios.post(url, request, {
+    axios[mode === "create" ? "post" : "put"](url, request, {
         headers: {
             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
         }
