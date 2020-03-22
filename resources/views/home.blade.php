@@ -29,6 +29,9 @@
                     <td>{{ $quizit->name }}</td>
                     <td>
                         <div class="actions">
+                            <a class="btn btn-primary action action-warning start">
+                                <i class="fa fa-play" style="font-size: 1.4rem"></i>
+                            </a>
                             <a class="btn btn-primary action action-warning edit" href="{{ route('quizits.edit', [$quizit->id]) }}">
                                 <i class="fa fa-pencil"></i>
                             </a>
