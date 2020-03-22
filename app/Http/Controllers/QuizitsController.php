@@ -8,6 +8,7 @@ use App\Models\QuizitQuestionAnswer;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class QuizitsController extends Controller
 {
@@ -48,6 +49,8 @@ class QuizitsController extends Controller
 
             $this->saveQuestions($quizit->id, $questions);
         } catch (Exception $e) {
+            Log::error($e);
+
             return [
                 'status' => 'error',
                 'message' => 'Could not create quizit! Please try again later.',
@@ -74,6 +77,8 @@ class QuizitsController extends Controller
 
             $this->saveQuestions($quizit->id, $questions);
         } catch (Exception $e) {
+            Log::error($e);
+
             return [
                 'status' => 'error',
                 'message' => 'Could not update quizit! Please try again later.',
@@ -85,9 +90,35 @@ class QuizitsController extends Controller
         ];
     }
 
+    public function delete(int $id)
+    {
+        try {
+            /** @var Quizit $quizit */
+            $quizit = Quizit::findOrFail($id);
+            $quizit->delete();
+        } catch (Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => 'Could not delete quizit! Please try again later.',
+            ];
+        }
+        return [
+            'status' => 'success',
+            'message' => 'Quizit was deleted successfully!',
+        ];
+    }
+
+    /**
+     * @param $quizitId
+     * @param $questions
+     */
     private function saveQuestions($quizitId, $questions)
     {
         foreach ($questions as $question) {
+            if (empty($question['answers'])) {
+                continue;
+            }
+
             $dbQuestion = new QuizitQuestion();
             $dbQuestion->quizit_id = $quizitId;
             $dbQuestion->question = $question['question'];
@@ -96,7 +127,7 @@ class QuizitsController extends Controller
             foreach ($question['answers'] as $answer) {
                 $dbAnswer = new QuizitQuestionAnswer();
                 $dbAnswer->question_id = $dbQuestion->id;
-                $dbAnswer->answer = $answer['answer'];
+                $dbAnswer->answer = $answer['answer'] ?? '';
                 $dbAnswer->correct = $answer['correct'];
                 $dbAnswer->save();
             }

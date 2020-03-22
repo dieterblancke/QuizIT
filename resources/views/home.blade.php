@@ -32,7 +32,7 @@
                             <a class="btn btn-primary action action-warning edit" href="{{ route('quizits.edit', [$quizit->id]) }}">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a class="btn btn-primary action action-danger delete">
+                            <a class="btn btn-primary action action-danger delete" data-quizit-id="{{ $quizit->id }}">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </div>

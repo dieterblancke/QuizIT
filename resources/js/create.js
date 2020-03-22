@@ -43,6 +43,9 @@ function loadExistingQuestions() {
         }
 
         quizQuestions.push(quizQuestion);
+
+        questionRow.querySelector('.edit').addEventListener('click', editQuestion);
+        questionRow.querySelector('.delete').addEventListener('click', deleteQuestion);
     }
 }
 
@@ -107,7 +110,7 @@ function addToTable(obj) {
 
     const tbody = document.querySelector("#questions tbody");
     const tr = document.createElement('tr');
-    tr.setAttribute('id', 'question_" + quizQuestions.length + "');
+    tr.setAttribute('data-row-index', quizQuestions.length + '');
 
     const questionTd = document.createElement('td');
     questionTd.innerText = question;
@@ -174,7 +177,6 @@ function submitQuiz(e) {
         }
     })
         .then(function (response) {
-            console.log(response);
             Swal.fire(
                 'QuizIN',
                 response.data.message,
@@ -198,7 +200,22 @@ function submitQuiz(e) {
 function deleteQuestion(e) {
     e.preventDefault();
 
-    console.log(e);
+    Swal.fire({
+        icon: 'question',
+        title: 'QuestionOUT',
+        text: 'Are you sure you want to remove this question?',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        showCancelButton: true,
+    }).then(function (result) {
+        if (result.value) {
+            const tr = e.target.closest('tr');
+            const index = parseInt(tr.getAttribute('data-row-index'));
+
+            quizQuestions.splice(index, 1);
+            tr.parentElement.removeChild(tr);
+        }
+    });
 }
 
 function editQuestion(e) {

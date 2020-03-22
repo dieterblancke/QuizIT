@@ -26,7 +26,7 @@
         </thead>
         <tbody>
         @foreach($quizit->questions as $question)
-            <tr>
+            <tr data-row-index="{{ $loop->iteration - 1 }}">
                 <td class="question">{{ $question->question }}</td>
                 <td class="answers">
                     <ul>
