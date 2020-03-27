@@ -10,14 +10,32 @@ class Quizit extends Model
 {
     protected $with = ['questions'];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'author_id');
     }
 
     /**
      * @return HasMany
      */
-    public function questions() {
+    public function questions()
+    {
         return $this->hasMany(QuizitQuestion::class, 'quizit_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function instances()
+    {
+        return $this->hasMany(QuizitInstance::class);
+    }
+
+    /**
+     * @eturn bool
+     */
+    public function isRunning()
+    {
+        return $this->instances()->whereNull('finished_at')->exists();
     }
 }

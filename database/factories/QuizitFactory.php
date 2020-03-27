@@ -27,7 +27,6 @@ $factory->define(Quizit::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'author_id' => $i,
-        'amount_started' => $faker->numberBetween(0, 150),
     ];
 });
 

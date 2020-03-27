@@ -16,7 +16,8 @@ class CreateQuizitInstancesTable extends Migration
         Schema::create('quizit_instances', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('quizit_id');
-            $table->timestamps();
+            $table->timestamp('started_at')->useCurrent();
+            $table->timestamp('finished_at')->nullable();
 
             $table
                 ->foreign('quizit_id')
