@@ -15,16 +15,16 @@ class CreateQuizitInstanceUsersTable extends Migration
     {
         Schema::create('quizit_instance_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('quizit_id');
+            $table->unsignedBigInteger('instance_id');
             $table->string('username');
             $table->string('ip');
             $table->integer('position');
             $table->timestamps();
 
             $table
-                ->foreign('quizit_id')
+                ->foreign('instance_id')
                 ->references('id')
-                ->on('quizits')
+                ->on('quizit_instances')
                 ->onDelete('cascade');
         });
     }

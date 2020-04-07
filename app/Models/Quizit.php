@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Quizit extends Model
 {
@@ -37,5 +39,46 @@ class Quizit extends Model
     public function isRunning()
     {
         return $this->instances()->whereNull('finished_at')->exists();
+    }
+
+    /**
+     * @return QuizitInstance|Model
+     */
+    public function getRunningQuiz()
+    {
+        return $this->instances()->whereNull('finished_at')->first();
+    }
+
+    /**
+     * @return string
+     */
+    public function start()
+    {
+        if ($this->isRunning()) {
+            return $this->getRunningQuiz()->join_key;
+        } else {
+            $instance = new QuizitInstance();
+            $instance->quizit_id = $this->getAttribute('id');
+            $instance->join_key = Str::random(6);
+            $instance->started_at = Carbon::now();
+            $instance->save();
+
+            return $instance->join_key;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function stop()
+    {
+        if ($this->isRunning()) {
+            $quiz = $this->getRunningQuiz();
+            $quiz->finished_at = Carbon::now();
+            $quiz->save();
+
+            return true;
+        }
+        return false;
     }
 }

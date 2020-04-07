@@ -25,11 +25,11 @@
             </thead>
             <tbody>
             @foreach($quizits as $quizit)
-                <tr>
+                <tr data-quizit-id="{{ $quizit->id }}">
                     <td>{{ $quizit->name }}</td>
                     <td>
                         <div class="actions">
-                            <a class="btn btn-primary action action-warning start">
+                            <a class="btn btn-primary action {{ $quizit->isRunning() ? 'action-danger stop' : 'action-success start' }}">
                                 <i class="fa fa-{{ $quizit->isRunning() ? 'stop' : 'play' }}" style="font-size: 1.4rem"></i>
                             </a>
                             <a class="btn btn-primary action action-warning edit" href="{{ route('quizits.edit', [$quizit->id]) }}">
