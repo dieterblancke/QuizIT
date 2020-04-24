@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\JokesController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -10,3 +13,10 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::prefix('/')
+    ->group(function () {
+        Route::get('joke', function () {
+           return JokesController::getRandomJoke();
+        });
+    });

@@ -16,10 +16,12 @@ function joinQuiz(e) {
     e.preventDefault();
 
     const join_key = document.querySelector('#join_key').value;
+    const username = document.querySelector("#username").value;
     const url = "/join"
 
     const request = {
-        join_key: join_key
+        join_key: join_key,
+        username: username
     };
 
     axios["post"](url, request, {

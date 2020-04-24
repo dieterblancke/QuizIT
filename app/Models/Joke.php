@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Joke extends Model
 {
-    //
+    public static function getRandomJoke() {
+        return self::all()->random();
+    }
 }

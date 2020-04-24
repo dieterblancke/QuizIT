@@ -2,25 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Quizit;
 use App\Models\QuizitInstance;
-use Exception;
+use App\Models\QuizitInstanceUser;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class QuizController extends Controller
 {
     public function joinView()
     {
-        return view('join');
+        return view('quiz.join');
     }
 
     public function join(Request $request)
     {
         $join_key = $request->input('join_key');
+        $username = $request->input('username');
 
         try {
             $instance = QuizitInstance::getActiveInstance($join_key);
+
+            if (is_null($username) || empty($username)) {
+                return [
+                    'status' => 'error',
+                    'message' => 'Please provide a username'
+                ];
+            }
 
             if (is_null($instance)) {
                 return [
@@ -28,7 +34,15 @@ class QuizController extends Controller
                     'message' => 'That quiz is not active'
                 ];
             }
-        } catch (Exception $e) {
+
+            $user = new QuizitInstanceUser;
+            $user->instance_id = $instance->id;
+            $user->username = $username;
+            $user->ip = $request->ip();
+
+            $user->save();
+        } catch
+        (Exception $e) {
             return [
                 'status' => 'error',
                 'message' => 'That quiz is not active'
@@ -41,7 +55,8 @@ class QuizController extends Controller
         ];
     }
 
-    public function quizView() {
-
+    public function quizView()
+    {
+        return view('quiz.quiz');
     }
 }
