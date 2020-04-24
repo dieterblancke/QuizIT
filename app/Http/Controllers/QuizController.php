@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quizit;
+use App\Models\QuizitInstance;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -16,30 +17,31 @@ class QuizController extends Controller
 
     public function join(Request $request)
     {
-        $quizID = $request->input('quizID');
-        $quiz = null;
+        $join_key = $request->input('join_key');
 
         try {
-            $quiz = Quizit::findOrFail($quizID);
+            $instance = QuizitInstance::getActiveInstance($join_key);
+
+            if (is_null($instance)) {
+                return [
+                    'status' => 'error',
+                    'message' => 'That quiz is not active'
+                ];
+            }
         } catch (Exception $e) {
-            Log::error($e);
-
             return [
                 'status' => 'error',
-                'message' => 'Could not find that quiz!'
-            ];
-        }
-
-        if (!$quiz->isRunning()) {
-            return [
-                'status' => 'error',
-                'message' => 'That quiz is not active!'
+                'message' => 'That quiz is not active'
             ];
         }
 
         return [
-            'status' => 'Success',
-            'message' => 'You are going to join the quiz: ' . $quiz->name
+            'status' => 'success',
+            'message' => 'You will be redirected to the quiz'
         ];
+    }
+
+    public function quizView() {
+
     }
 }

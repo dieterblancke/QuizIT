@@ -15,11 +15,11 @@ function init() {
 function joinQuiz(e) {
     e.preventDefault();
 
-    const quizID = document.querySelector('#quizID').value;
+    const join_key = document.querySelector('#join_key').value;
     const url = "/join"
 
     const request = {
-        quizID: quizID
+        join_key: join_key
     };
 
     axios["post"](url, request, {
@@ -29,10 +29,13 @@ function joinQuiz(e) {
     })
         .then(function (response) {
             Swal.fire(
-                'Join Quis',
+                'Join Quiz',
                 response.data.message,
                 response.data.status
             )
+                .then(function () {
+                    window.location = '/quiz/' + join_key;
+                })
         })
         .catch(function (json) {
             console.error(json);
