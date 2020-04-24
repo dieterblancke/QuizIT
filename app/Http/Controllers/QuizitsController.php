@@ -35,6 +35,36 @@ class QuizitsController extends Controller
         ]);
     }
 
+    public function start(int $quizitId)
+    {
+        /** @var Quizit $quizit */
+        $quizit = Quizit::findOrFail($quizitId);
+        $joinId = $quizit->start();
+
+        return [
+            'status' => 'success',
+            'title' => 'Quiz was started successfully!',
+            'message' => "People can join using the code: <strong>$joinId</strong>",
+        ];
+    }
+
+    public function stop(int $quizitId)
+    {
+        /** @var Quizit $quizit */
+        $quizit = Quizit::findOrFail($quizitId);
+        if ($quizit->stop()) {
+            return [
+                'status' => 'success',
+                'message' => "Quiz was stopped successfully!",
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => "Quiz could not be stopped, try again later!",
+            ];
+        }
+    }
+
     public function create(Request $request)
     {
         $name = $request->input('name');

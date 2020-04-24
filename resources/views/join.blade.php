@@ -4,10 +4,14 @@
 
 @section('content')
     <h1>Join quiz</h1>
-    <h2>Supply<br />QuizID</h2>
 
     <form action="{{route("join")}}" method="POST">
-        <input type="number" min="0" name="QuizID" id="QuizID">
-        <input type="submit" value="QuizIN">
+        <div class="form-group">
+            <label for="quizid">Quiz ID</label>
+            <input type="text" min="0" name="quizid" id="quizid" class="form-control">
+        </div>
+        <div class="form-group mt-2">
+            <input type="submit" value="QuizIN" class="btn btn-primary">
+        </div>
     </form>
 @endsection

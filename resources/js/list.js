@@ -1,10 +1,36 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const deleteButtons = document.querySelectorAll('#quizits .delete');
-
-    for (let i = 0; i < deleteButtons.length; i++) {
-        deleteButtons[i].addEventListener('click', onQuizitDeleteClick);
-    }
+    addEventToAll('#quizits .delete', 'click', onQuizitDeleteClick);
+    addEventToAll('#quizits .start', 'click', onQuizitStartClick);
+    addEventToAll('#quizits .stop', 'click', onQuizitStopClick);
 });
+
+function onQuizitStartClick(event) {
+    event.preventDefault();
+
+    const id = event.target.closest('tr').getAttribute('data-quizit-id');
+    axios.put('/quizits/start/' + id)
+        .then(function (response) {
+            response = response.data;
+
+            Swal.fire(response.title, response.message, response.status).then(function () {
+                location.reload();
+            });
+        });
+}
+
+function onQuizitStopClick(event) {
+    event.preventDefault();
+
+    const id = event.target.closest('tr').getAttribute('data-quizit-id');
+    axios.put('/quizits/stop/' + id)
+        .then(function (response) {
+            response = response.data;
+
+            Swal.fire(response.message, '', response.status).then(function () {
+                location.reload();
+            });
+        });
+}
 
 function onQuizitDeleteClick(event) {
     event.preventDefault();
@@ -52,4 +78,12 @@ function deleteQuizit(id, target) {
                 text: 'Something went wrong!',
             });
         });
+}
+
+function addEventToAll(selector, eventType, eventHandler) {
+    const all = document.querySelectorAll(selector);
+
+    for (let i = 0; i < all.length; i++) {
+        all[i].addEventListener(eventType, eventHandler);
+    }
 }
