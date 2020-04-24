@@ -3,3 +3,4 @@ require('./bootstrap');
 require('./create');
 require('./list');
 require('./join');
+require('./websocket.js');

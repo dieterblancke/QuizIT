@@ -81,4 +81,12 @@ class Quizit extends Model
         }
         return false;
     }
+
+    /**
+     * @return QuizitInstance|HasMany|object|null
+     */
+    public function getRunningQuizit()
+    {
+        return $this->instances()->whereNull('finished_at')->limit(1)->first();
+    }
 }
