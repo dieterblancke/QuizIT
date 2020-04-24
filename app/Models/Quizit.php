@@ -38,4 +38,12 @@ class Quizit extends Model
     {
         return $this->instances()->whereNull('finished_at')->exists();
     }
+
+    /**
+     * @return QuizitInstance|HasMany|object|null
+     */
+    public function getRunningQuizit()
+    {
+        return $this->instances()->whereNull('finished_at')->limit(1)->first();
+    }
 }
