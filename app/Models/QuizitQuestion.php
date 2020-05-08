@@ -23,6 +23,10 @@ class QuizitQuestion extends Model
      */
     public function answers()
     {
-        return $this->hasMany(QuizitQuestionAnswer::class, 'question_id');
+        return $this->hasMany(QuizitQuestionAnswer::class, 'question_id')->inRandomOrder();
+    }
+
+    public function getCorrectAnswerCount() {
+        return $this->answers()->where('correct', '=', true)->count();
     }
 }

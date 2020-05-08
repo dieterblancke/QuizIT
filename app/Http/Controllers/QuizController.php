@@ -55,8 +55,16 @@ class QuizController extends Controller
         ];
     }
 
-    public function quizView()
+    public function quizView(string $join_key)
     {
-        return view('quiz.quiz');
+        $instance = QuizitInstance::getActiveInstance($join_key);
+        $quizit = $instance->getQuizit();
+
+        return view('quiz.quiz', ['instance' => $instance, 'quizit' => $quizit]);
+    }
+
+    public function submit(string $join_key)
+    {
+        // TODO
     }
 }

@@ -64,6 +64,35 @@
         <h2 id="punchline"></h2>
         <button id="copy_link" class="btn btn-primary mt-2" type="button">Copy Quiz Link</button>
         <textarea id="quiz_url">Test</textarea>
+
+        <div class="progress mt-5">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </section>
+
+    <section class="container shadow-lg card p-3 my-5 d-none" id="questionlist">
+        <form action="{{ route('') }}">
+            <ul class="questions list-unstyled">
+                @foreach($quizit->questions as $question)
+                    <li>
+                        <h2>{{ $question->question }}</h2>
+
+                        @foreach($question->answers as $answer)
+                            <div class="form-group">
+                                <input type="{{ $question->getCorrectAnswerCount() > 1 ? 'checkbox' : 'radio' }}"
+                                       id="answer_{{ $answer->id }}"
+                                       name="answer_{{ $answer->id }}"/>
+                                <label for="answer_{{ $answer->id }}">{{ $answer->answer }}</label>
+                            </div>
+                        @endforeach
+
+                        @if(!$loop->last)
+                            <hr/>
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+        </form>
     </section>
 @endsection
 

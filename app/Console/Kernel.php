@@ -26,18 +26,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function() {
-            $x = 60 / 3;
-
-            while ($x-- > 0) {
-                $now = Carbon::now()->addSeconds(3);
-                QuizitScheduleJob::dispatch()->onQueue('schedule-queue');
-
-                if ($now->isAfter(Carbon::now())) {
-                    time_sleep_until($now->timestamp);
-                }
-            }
-        })->everyMinute();
     }
 
     /**
@@ -47,7 +35,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

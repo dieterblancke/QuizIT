@@ -1,6 +1,6 @@
-"use strict"
+"use strict";
 
-document.addEventListener("DOMContentLoaded", init)
+document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     const waiting = document.querySelector('#waiting');
@@ -11,11 +11,11 @@ function init() {
 
     document.querySelector("#copy_link").addEventListener("click", copyLink);
     document.getElementById("quiz_url").innerText = window.location;
-    getJoke();
+    loadJoke();
     startTimer();
 }
 
-function getJoke() {
+function loadJoke() {
     const url = "/api/joke";
 
     axios["get"](url)
@@ -29,7 +29,18 @@ function getJoke() {
 }
 
 function startTimer() {
-    const intervalID = window.setInterval(getJoke, 30000);
+    // window.setInterval(getJoke, 30000);
+    let count = 0;
+    setInterval(function () {
+        count += 1;
+
+        document.querySelector('.progress-bar').style = 'width: ' + count + '%';
+    }, 80);
+
+    setTimeout(function() {
+        document.querySelector('#waiting').classList.add('d-none');
+        document.querySelector('#questionlist').classList.remove('d-none');
+    }, 10000);
 }
 
 function copyLink(e) {

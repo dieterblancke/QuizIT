@@ -34,8 +34,10 @@ Route::prefix('/')
                 Route::post('/', 'QuizController@join')->name('join');
             });
         Route::prefix('quiz')
+            ->as('quiz.')
             ->group(function () {
                 Route::get('/{join_key}', 'QuizController@quizView');
+                Route::post('/submit/{quiz_id}', 'QuizController@submit');
             });
     });
 
