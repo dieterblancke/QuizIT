@@ -32,25 +32,32 @@
                     <td>
                         <div class="actions">
                             <a class="btn btn-primary action {{ $quizit->isRunning() ? 'action-danger stop' : 'action-success start' }}">
-                                <i class="fa fa-{{ $quizit->isRunning() ? 'stop' : 'plus' }}" style="font-size: 1.4rem"></i>
+                                <i class="fa fa-{{ $quizit->isRunning() ? 'stop' : 'plus' }}"
+                                   style="font-size: 1.4rem"></i>
                             </a>
-                            <a class="btn btn-primary action action-warning edit" href="{{ route('quizits.edit', [$quizit->id]) }}">
+                            <a class="btn btn-primary action action-warning edit"
+                               href="{{ route('quizits.edit', [$quizit->id]) }}">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a class="btn btn-primary action action-danger delete" data-quizit-id="{{ $quizit->id }}">
                                 <i class="fa fa-trash"></i>
                             </a>
-                            @if($quizit->isRunning())
-                                <a class="btn btn-primary action">
-                                    <i class="fa fa-play"></i>
-                                </a>
-                            @endif
                         </div>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
-        
+        <article>
+            <h2>Caption</h2>
+            <i class="fa fa-plus"></i>
+            <p>Create a join key</p>
+            <i class="fa fa-stop"></i>
+            <p>Remove the join key</p>
+            <i class="fa fa-pencil"></i>
+            <p>Edit quiz</p>
+            <i class="fa fa-trash"></i>
+            <p>Remove quiz</p>
+        </article>
     </div>
 @endsection
