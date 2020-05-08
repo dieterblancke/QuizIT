@@ -52,7 +52,7 @@ class Quizit extends Model
     /**
      * @return string
      */
-    public function start()
+    public function create()
     {
         if ($this->isRunning()) {
             return $this->getRunningQuiz()->join_key;

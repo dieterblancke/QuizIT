@@ -37,15 +37,7 @@ class QuizitsController extends Controller
 
     public function start(int $quizitId)
     {
-        /** @var Quizit $quizit */
-        $quizit = Quizit::findOrFail($quizitId);
-        $joinId = $quizit->start();
-
-        return [
-            'status' => 'success',
-            'title' => 'Quiz was started successfully!',
-            'message' => "People can join using the code: <strong>$joinId</strong>",
-        ];
+        //TODO: Start a quiz
     }
 
     public function stop(int $quizitId)
@@ -135,6 +127,19 @@ class QuizitsController extends Controller
         return [
             'status' => 'success',
             'message' => 'Quizit was deleted successfully!',
+        ];
+    }
+
+    public function createInstance(int $id)
+    {
+        /** @var Quizit $quizit */
+        $quizit = Quizit::findOrFail($id);
+        $joinId = $quizit->create();
+
+        return [
+            'status' => 'success',
+            'title' => 'Quiz was started successfully!',
+            'message' => "People can join using the code: <strong>$joinId</strong>"
         ];
     }
 

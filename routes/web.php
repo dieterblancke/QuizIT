@@ -60,4 +60,6 @@ Route::prefix('quizits')
 
         Route::put('/start/{id}', 'QuizitsController@start');
         Route::put('/stop/{id}', 'QuizitsController@stop');
+
+        Route::put('/create/{id}', 'QuizitsController@createInstance');
     });

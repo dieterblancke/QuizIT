@@ -8,7 +8,7 @@ function onQuizitStartClick(event) {
     event.preventDefault();
 
     const id = event.target.closest('tr').getAttribute('data-quizit-id');
-    axios.put('/quizits/start/' + id)
+    axios.put('/quizits/create/' + id)
         .then(function (response) {
             response = response.data;
 
