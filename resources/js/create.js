@@ -139,9 +139,11 @@ function addToTable(obj) {
     tr.setAttribute('data-row-index', quizQuestions.length + '');
 
     const questionTd = document.createElement('td');
+    questionTd.classList.add("question");
     questionTd.innerText = question;
 
     const answersTd = document.createElement('td');
+    answersTd.classList.add("answers");
     const answerUl = document.createElement('ul');
 
     for (let i = 0; i < answers.length; i++) {

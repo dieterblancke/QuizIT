@@ -16,7 +16,7 @@ class CreateQuizitQuestionAnswersTable extends Migration
         Schema::create('quizit_question_answers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('question_id');
-            $table->string('answer');
+            $table->text('answer');
             $table->boolean('correct');
             $table->timestamps();
 

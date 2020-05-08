@@ -1,4 +1,12 @@
 #questions {
+    .question {
+        width: 50%;
+    }
+
+    .answers {
+        width: 40%;
+    }
+
     ul {
         padding-left: 0;
 
@@ -7,6 +15,7 @@
             padding-bottom: 5px;
             list-style: none;
             position: relative;
+            margin-top: 15px;
 
             span {
                 margin-left: 10px;

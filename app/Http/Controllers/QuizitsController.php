@@ -38,6 +38,7 @@ class QuizitsController extends Controller
     public function start(int $quizitId)
     {
         //TODO: Start a quiz
+
     }
 
     public function stop(int $quizitId)
