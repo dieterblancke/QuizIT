@@ -17,7 +17,6 @@ class CreateQuizitInstanceUsersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('instance_id');
             $table->string('username');
-            $table->string('ip');
             $table->integer('position');
             $table->timestamps();
 

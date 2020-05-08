@@ -31,18 +31,18 @@ class QuizController extends Controller
             if (is_null($instance)) {
                 return [
                     'status' => 'error',
-                    'message' => 'That quiz is not active'
+                    'message' => 'That quiz is not active - is_null'
                 ];
             }
 
             $user = new QuizitInstanceUser;
             $user->instance_id = $instance->id;
             $user->username = $username;
-            $user->ip = $request->ip();
-
+            $user->position = -1;
             $user->save();
+
         } catch
-        (Exception $e) {
+        (\Exception $e) {
             return [
                 'status' => 'error',
                 'message' => 'That quiz is not active'
