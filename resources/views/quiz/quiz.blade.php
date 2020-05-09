@@ -55,6 +55,12 @@
             opacity: 0;
         }
 
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
     </style>
 @endsection
 
@@ -63,10 +69,10 @@
         <h1 id="joke"></h1>
         <h2 id="punchline"></h2>
         <button id="copy_link" class="btn btn-primary mt-2" type="button">Copy Quiz Link</button>
-        <textarea id="quiz_url">Test</textarea>
+        <textarea id="quiz_url"></textarea>
 
         <div class="progress mt-5">
-            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%"
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0"
                  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
     </section>

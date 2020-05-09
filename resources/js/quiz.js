@@ -40,6 +40,7 @@ function startTimer() {
     setTimeout(function() {
         document.querySelector('#waiting').classList.add('d-none');
         document.querySelector('#questionlist').classList.remove('d-none');
+        document.querySelector('#app').classList.remove('loading');
     }, 10000);
 }
 
