@@ -56,6 +56,8 @@ Route::prefix('quizits')
                 Route::post('/', 'QuizitsController@create')->name('create');
             });
 
+        Route::get('/results/{id}', 'QuizitsController@resultsView')->name('results');
+
         Route::get('/edit/{id}', 'QuizitsController@editView')->name('edit');
         Route::put('/update/{id}', 'QuizitsController@update');
         Route::delete('/delete/{id}', 'QuizitsController@delete');

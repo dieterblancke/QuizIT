@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Quizit extends Model
 {
-    protected $with = ['questions'];
+    protected $with = ['questions', 'results'];
 
     public static function getByKey($join_key)
     {

@@ -27,6 +27,15 @@ class QuizitsController extends Controller
         return view('quizits.create');
     }
 
+    public function resultsView(int $id)
+    {
+        $quizit = Quizit::findOrFail($id);
+
+        return view('quizits.results', [
+            'quizit' => $quizit,
+        ]);
+    }
+
     public function editView(int $id)
     {
         $quizit = Quizit::findOrFail($id);

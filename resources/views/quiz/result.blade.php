@@ -16,16 +16,13 @@
 
                 @foreach($result->answers as $answer)
                     <div class="form-group px-2 "
-                         @if($answer->correct)
-                         style="background: mediumseagreen;"
-                         @elseif(!$answer->correct && $result->givenAnswer === $answer->answer)
-                         style="background: rgba(205,92,92,0.82);"
-                        @endif>
+                         @if($answer->correct) style="background: mediumseagreen;" @elseif(!$answer->correct && $result->givenAnswer === $answer->answer) style="background: rgba(205,92,92,0.82);" @endif>
                         <input type="{{ $result->question->getCorrectAnswerCount() > 1 ? 'checkbox' : 'radio' }}"
                                @if($answer->correct) checked @endif
                                disabled/>
-                        <label class="mt-2">{{ $answer->answer }} @if($result->givenAnswer === $answer->answer) <strong>YOUR
-                                ANSWER</strong> @endif</label>
+                        <label class="mt-2">{{ $answer->answer }}
+                            @if($result->givenAnswer === $answer->answer) <strong>YOUR ANSWER</strong> @endif
+                        </label>
                     </div>
                 @endforeach
             </li>
