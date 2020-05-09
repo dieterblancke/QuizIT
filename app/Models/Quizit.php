@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use App\User;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 
 class Quizit extends Model
 {
     protected $with = ['questions'];
+
+    public static function getByKey($join_key)
+    {
+        return self::query()->where('key', $join_key)->where('active', true)->first();
+    }
 
     public function user()
     {
@@ -28,43 +31,20 @@ class Quizit extends Model
     /**
      * @return HasMany
      */
-    public function instances()
+    public function results()
     {
-        return $this->hasMany(QuizitInstance::class);
-    }
-
-    /**
-     * @eturn bool
-     */
-    public function isRunning()
-    {
-        return $this->instances()->whereNull('finished_at')->exists();
-    }
-
-    /**
-     * @return QuizitInstance|Model
-     */
-    public function getRunningQuiz()
-    {
-        return $this->instances()->whereNull('finished_at')->first();
+        return $this->hasMany(QuizitResults::class, 'quizit_id');
     }
 
     /**
      * @return string
      */
-    public function create()
+    public function start()
     {
-        if ($this->isRunning()) {
-            return $this->getRunningQuiz()->join_key;
-        } else {
-            $instance = new QuizitInstance();
-            $instance->quizit_id = $this->getAttribute('id');
-            $instance->join_key = Str::random(6);
-            $instance->started_at = Carbon::now();
-            $instance->save();
+        $this->active = true;
+        $this->save();
 
-            return $instance->join_key;
-        }
+        return $this->key;
     }
 
     /**
@@ -72,21 +52,8 @@ class Quizit extends Model
      */
     public function stop()
     {
-        if ($this->isRunning()) {
-            $quiz = $this->getRunningQuiz();
-            $quiz->finished_at = Carbon::now();
-            $quiz->save();
-
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @return QuizitInstance|HasMany|object|null
-     */
-    public function getRunningQuizit()
-    {
-        return $this->instances()->whereNull('finished_at')->limit(1)->first();
+        $this->active = false;
+        $this->save();
+        return true;
     }
 }

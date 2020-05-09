@@ -15,7 +15,8 @@ class QuizitQuestion extends Model
      */
     public function quizit()
     {
-        return $this->belongsTo(Quizit::class, 'quizit_id');
+        return $this
+            ->belongsTo(Quizit::class, 'quizit_id');
     }
 
     /**
@@ -23,10 +24,33 @@ class QuizitQuestion extends Model
      */
     public function answers()
     {
-        return $this->hasMany(QuizitQuestionAnswer::class, 'question_id')->inRandomOrder();
+        return $this
+            ->hasMany(QuizitQuestionAnswer::class, 'question_id')
+            ->inRandomOrder();
     }
 
-    public function getCorrectAnswerCount() {
-        return $this->answers()->where('correct', '=', true)->count();
+    public function getCorrectAnswerCount()
+    {
+        return $this
+            ->answers()
+            ->where('correct', true)
+            ->count();
+    }
+
+    public function isCorrect(int $id)
+    {
+        return $this
+            ->answers()
+            ->where('id', '=', $id)
+            ->where('correct', true)
+            ->exists();
+    }
+
+    public function getCorrectAnswers()
+    {
+        return $this
+            ->answers()
+            ->where('correct', true)
+            ->get('answer');
     }
 }

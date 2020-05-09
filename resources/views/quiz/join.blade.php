@@ -5,7 +5,7 @@
 @section('content')
     <h1>Join quiz</h1>
 
-    <form id="join" action="{{route("join")}}" method="POST">
+    <form id="join" action="{{ route("join") }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="join_key">Join key</label>
@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" required="required" min="0" name="username" id="username" class="form-control">
+            <input type="text" required="required" min="0" name="username" id="username" class="form-control" @if(auth()->user() !== null) value="{{ auth()->user()->name }}" @endif>
         </div>
         <div class="form-group mt-2">
             <input type="submit" value="QuizIN" class="btn btn-primary">

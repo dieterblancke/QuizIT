@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class QuizitsController extends Controller
 {
@@ -38,7 +39,13 @@ class QuizitsController extends Controller
     public function start(int $quizitId)
     {
         //TODO: Start a quiz
+        $quizit = Quizit::findOrFail($quizitId);
+        $quizit->start();
 
+        return [
+            'status' => 'success',
+            'message' => "Quiz was activated successfully!",
+        ];
     }
 
     public function stop(int $quizitId)
@@ -48,7 +55,7 @@ class QuizitsController extends Controller
         if ($quizit->stop()) {
             return [
                 'status' => 'success',
-                'message' => "Quiz was stopped successfully!",
+                'message' => "Quiz was deactivated successfully!",
             ];
         } else {
             return [
@@ -67,7 +74,8 @@ class QuizitsController extends Controller
             $quizit = new Quizit();
             $quizit->name = $name;
             $quizit->author_id = Auth::user()->id;
-            $quizit->amount_started = 0;
+            $quizit->active = false;
+            $quizit->key = Str::random(8);
             $quizit->save();
 
             $this->saveQuestions($quizit->id, $questions);
@@ -128,19 +136,6 @@ class QuizitsController extends Controller
         return [
             'status' => 'success',
             'message' => 'Quizit was deleted successfully!',
-        ];
-    }
-
-    public function createInstance(int $id)
-    {
-        /** @var Quizit $quizit */
-        $quizit = Quizit::findOrFail($id);
-        $joinId = $quizit->create();
-
-        return [
-            'status' => 'success',
-            'title' => 'Quiz was started successfully!',
-            'message' => "People can join using the code: <strong>$joinId</strong>"
         ];
     }
 

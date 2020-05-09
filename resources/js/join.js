@@ -24,7 +24,7 @@ function joinQuiz(e) {
         username: username
     };
 
-    axios["post"](url, request, {
+    axios.post(url, request, {
         headers: {
             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
         }
@@ -36,7 +36,9 @@ function joinQuiz(e) {
                 response.data.status
             )
                 .then(function () {
-                    window.location = '/quiz/' + join_key;
+                    if (response.data.status === 'success') {
+                        window.location = '/quiz/' + join_key;
+                    }
                 })
         })
         .catch(function (json) {

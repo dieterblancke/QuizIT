@@ -17,6 +17,8 @@ class CreateQuizitsTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('author_id');
+            $table->boolean('active');
+            $table->string('key');
             $table->timestamps();
 
             $table

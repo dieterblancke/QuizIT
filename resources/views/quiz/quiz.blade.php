@@ -66,12 +66,15 @@
         <textarea id="quiz_url">Test</textarea>
 
         <div class="progress mt-5">
-            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%"
+                 aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
     </section>
 
     <section class="container shadow-lg card p-3 my-5 d-none" id="questionlist">
-        <form action="{{ route('') }}">
+        <h1 class="text-center">{{ $quizit->name }}</h1>
+        <form action="{{ route('quiz.submit', $quizit->id) }}" method="POST">
+            @csrf
             <ul class="questions list-unstyled">
                 @foreach($quizit->questions as $question)
                     <li>
@@ -81,7 +84,9 @@
                             <div class="form-group">
                                 <input type="{{ $question->getCorrectAnswerCount() > 1 ? 'checkbox' : 'radio' }}"
                                        id="answer_{{ $answer->id }}"
-                                       name="answer_{{ $answer->id }}"/>
+                                       name="question_{{ $question->id }}"
+                                       value="{{ $answer->id }}"
+                                       @if ($question->getCorrectAnswerCount() <= 1 && $loop->first) required @endif />
                                 <label for="answer_{{ $answer->id }}">{{ $answer->answer }}</label>
                             </div>
                         @endforeach
@@ -92,6 +97,8 @@
                     </li>
                 @endforeach
             </ul>
+
+            <input type="submit" class="btn btn-primary" value="Submit your answers"/>
         </form>
     </section>
 @endsection

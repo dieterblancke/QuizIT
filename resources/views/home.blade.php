@@ -28,11 +28,11 @@
             @foreach($quizits as $quizit)
                 <tr data-quizit-id="{{ $quizit->id }}">
                     <td>{{ $quizit->name }}</td>
-                    <td>{{ $quizit->getRunningQuizit()->join_key ?? '' }}</td>
+                    <td>{{ $quizit->key ?? '' }}</td>
                     <td>
                         <div class="actions">
-                            <a class="btn btn-primary action {{ $quizit->isRunning() ? 'action-danger stop' : 'action-success start' }}">
-                                <i class="fa fa-{{ $quizit->isRunning() ? 'stop' : 'plus' }}"
+                            <a class="btn btn-primary action {{ $quizit->active ? 'action-danger stop' : 'action-success start' }}">
+                                <i class="fa fa-{{ $quizit->active ? 'stop' : 'play' }}"
                                    style="font-size: 1.4rem"></i>
                             </a>
                             <a class="btn btn-primary action action-warning edit"

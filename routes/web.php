@@ -37,7 +37,7 @@ Route::prefix('/')
             ->as('quiz.')
             ->group(function () {
                 Route::get('/{join_key}', 'QuizController@quizView');
-                Route::post('/submit/{quiz_id}', 'QuizController@submit');
+                Route::post('/submit/{quiz_id}', 'QuizController@submit')->name('submit');
             });
     });
 
@@ -61,5 +61,5 @@ Route::prefix('quizits')
         Route::delete('/delete/{id}', 'QuizitsController@delete');
 
         Route::put('/stop/{id}', 'QuizitsController@stop');
-        Route::put('/create/{id}', 'QuizitsController@createInstance');
+        Route::put('/start/{id}', 'QuizitsController@start');
     });

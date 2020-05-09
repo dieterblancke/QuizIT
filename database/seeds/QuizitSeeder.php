@@ -5,6 +5,7 @@ use App\Models\QuizitQuestion;
 use App\Models\QuizitQuestionAnswer;
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class QuizitSeeder extends Seeder
 {
@@ -12,6 +13,7 @@ class QuizitSeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
+     * @throws Exception
      */
     public function run()
     {
@@ -318,6 +320,8 @@ class QuizitSeeder extends Seeder
                 $quizit = new Quizit();
                 $quizit->name = $name;
                 $quizit->author_id = $user->id;
+                $quizit->active = random_int(0, 1);
+                $quizit->key = Str::random(8);
                 $quizit->save();
 
                 foreach ($questions as $question => $answers) {

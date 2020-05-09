@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\QuizitInstance;
-use App\Models\QuizitInstanceUser;
+use App\Models\Quizit;
+use App\Models\QuizitQuestionAnswer;
+use App\Models\QuizitResults;
+use Exception;
 use Illuminate\Http\Request;
 
 class QuizController extends Controller
@@ -19,8 +21,6 @@ class QuizController extends Controller
         $username = $request->input('username');
 
         try {
-            $instance = QuizitInstance::getActiveInstance($join_key);
-
             if (is_null($username) || empty($username)) {
                 return [
                     'status' => 'error',
@@ -28,21 +28,18 @@ class QuizController extends Controller
                 ];
             }
 
-            if (is_null($instance)) {
+            $quizit = Quizit::getByKey($join_key);
+
+            if (is_null($quizit)) {
                 return [
                     'status' => 'error',
-                    'message' => 'That quiz is not active - is_null'
+                    'message' => 'That quiz is not active.'
                 ];
             }
 
-            $user = new QuizitInstanceUser;
-            $user->instance_id = $instance->id;
-            $user->username = $username;
-            $user->position = -1;
-            $user->save();
-
-        } catch
-        (\Exception $e) {
+            $request->session()->put('username', $username);
+            $request->session()->put('quiz', $quizit->id);
+        } catch (Exception $e) {
             return [
                 'status' => 'error',
                 'message' => 'That quiz is not active'
@@ -55,16 +52,70 @@ class QuizController extends Controller
         ];
     }
 
-    public function quizView(string $join_key)
+    public function quizView(Request $request, string $join_key)
     {
-        $instance = QuizitInstance::getActiveInstance($join_key);
-        $quizit = $instance->getQuizit();
+        $quizit = Quizit::getByKey($join_key);
 
-        return view('quiz.quiz', ['instance' => $instance, 'quizit' => $quizit]);
+        if (is_null($quizit)) {
+            return redirect('/');
+        }
+
+        return view('quiz.quiz', ['quizit' => $quizit]);
     }
 
-    public function submit(string $join_key)
+    public function submit(Request $request, int $quizId)
     {
-        // TODO
+        /** @var Quizit $quizit */
+        $quizit = Quizit::findOrFail($quizId);
+
+        if (is_null($quizit)) {
+            return redirect('/');
+        }
+        $givenAnswers = $request->post();
+        $results = [];
+        $correct = 0;
+
+        foreach ($quizit->questions as $question) {
+            $correctAnswers = $question->getCorrectAnswers();
+
+            if (array_key_exists('question_' . $question->id, $givenAnswers)) {
+                $givenAnswer = QuizitQuestionAnswer
+                    ::query()
+                    ->where('id', '=', $givenAnswers['question_' . $question->id])
+                    ->first();
+                $isCorrect = $question->isCorrect($givenAnswers['question_' . $question->id]);
+
+                if ($isCorrect) $correct++;
+
+                $results[] = (object) [
+                    'question' => $question,
+                    'givenAnswer' => $givenAnswer->answer ?? '',
+                    'correctAnswers' => $correctAnswers,
+                    'answers' => $question->answers()->get(),
+                    'correct' => $isCorrect,
+                ];
+            } else {
+                $results[] = (object) [
+                    'question' => $question,
+                    'givenAnswer' => '',
+                    'correctAnswers' => $correctAnswers,
+                    'answers' => $question->answers()->get(),
+                    'correct' => false,
+                ];
+            }
+        }
+
+        $quizitResult = new QuizitResults();
+        $quizitResult->quizit_id = $quizit->id;
+        $quizitResult->username = $request->session()->get('username');
+        $quizitResult->score = $correct;
+        $quizitResult->total = $quizit->questions->count();
+        $quizitResult->save();
+
+        return view('quiz.result', [
+            'quizit' => $quizit,
+            'results' => (object) $results,
+            'score' => $correct . ' / ' . $quizit->questions->count(),
+        ]);
     }
 }

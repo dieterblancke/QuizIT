@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuizitInstanceUsersTable extends Migration
+class CreateQuizitResultsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,18 @@ class CreateQuizitInstanceUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('quizit_instance_users', function (Blueprint $table) {
+        Schema::create('quizit_results', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('instance_id');
+            $table->unsignedBigInteger('quizit_id');
             $table->string('username');
-            $table->integer('position');
+            $table->integer('score');
+            $table->integer('total');
             $table->timestamps();
 
             $table
-                ->foreign('instance_id')
+                ->foreign('quizit_id')
                 ->references('id')
-                ->on('quizit_instances')
+                ->on('quizits')
                 ->onDelete('cascade');
         });
     }
@@ -35,6 +36,6 @@ class CreateQuizitInstanceUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quizit_instance_users');
+        Schema::dropIfExists('quizit_results');
     }
 }

@@ -18,7 +18,7 @@ function init() {
 function loadJoke() {
     const url = "/api/joke";
 
-    axios["get"](url)
+    axios.get(url)
         .then(function (response) {
             document.querySelector("#joke").innerText = response.data.joke;
             document.querySelector("#punchline").innerText = response.data.punchline;
