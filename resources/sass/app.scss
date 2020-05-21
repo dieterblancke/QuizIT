@@ -11,10 +11,11 @@
 @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+//@import '~bootstrap/scss/bootstrap';
 
 //Create quiz CSS
 @import "create_quiz";
 @import "actions";
 
 @import "quiz";
+@import "styling.css";

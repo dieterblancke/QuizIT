@@ -23,9 +23,9 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav id="mainNav" class="navbar navbar-expand-lg bg-secondary">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand js-scroll-trigger" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -35,7 +35,15 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li class="nav-item">
+                            <a href="{{ route('join') }}" class="nav-link">Join</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('quizits.index') }}" class="nav-link">Manage</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('quizits.create') }}" class="nav-link">Create</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
